@@ -1378,10 +1378,9 @@ button {
   width: auto;
   object-fit: contain;
   opacity: 0.6;
-  filter: grayscale(100%);
+  filter: grayscale(100%) brightness(1.8);
   transition: all var(--transition-base);
   flex-shrink: 0;
-  border-radius: 6px;
 }
 
 .marquee:hover .marquee__logo-img {

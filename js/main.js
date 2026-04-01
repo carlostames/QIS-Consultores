@@ -157,48 +157,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', highlightNav, { passive: true });
 
-  // ---- Contact Form Handling ----
-  const contactForm = document.getElementById('contact-form');
-  const submitBtn = document.getElementById('contact-submit');
+  // ---- Download Form → PDF Generation ----
+  const downloadForm = document.getElementById('download-form');
+  const downloadBtn = document.getElementById('download-submit');
 
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+  if (downloadForm && downloadBtn) {
+    downloadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    // Get form data
-    const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData);
+      // Get form data
+      const formData = new FormData(downloadForm);
+      const data = Object.fromEntries(formData);
 
-    // Visual feedback
-    submitBtn.innerHTML = `
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="animation: spin 1s linear infinite;">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-      </svg>
-      Sending...
-    `;
-    submitBtn.disabled = true;
-
-    // Simulate sending (replace with actual API call)
-    setTimeout(() => {
-      submitBtn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M20 6L9 17l-5-5"/>
+      // Visual feedback — show generating state
+      const originalHTML = downloadBtn.innerHTML;
+      downloadBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="animation: spin 1s linear infinite;">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
         </svg>
-        Message Sent!
+        Generating PDF...
       `;
-      submitBtn.style.background = 'var(--green-500)';
+      downloadBtn.disabled = true;
 
-      // Log form data (replace with actual submission logic)
-      console.log('Form submitted:', data);
+      // Log lead data (replace with actual CRM/webhook integration)
+      console.log('Download lead captured:', data);
 
-      // Reset after 3 seconds
-      setTimeout(() => {
-        contactForm.reset();
-        submitBtn.innerHTML = 'Send Message <span class="btn__arrow">→</span>';
-        submitBtn.style.background = '';
-        submitBtn.disabled = false;
-      }, 3000);
-    }, 1500);
-  });
+      try {
+        // Fetch the one-pager HTML
+        const response = await fetch('one-pager.html');
+        const htmlText = await response.text();
+
+        // Parse the HTML to extract the content
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+        const onePagerContent = doc.getElementById('one-pager-content');
+
+        if (!onePagerContent) {
+          throw new Error('One-pager content not found');
+        }
+
+        // Also fetch the CSS
+        const cssResponse = await fetch('css/one-pager.css');
+        const cssText = await cssResponse.text();
+
+        // Create a hidden container with the one-pager content and its styles
+        const container = document.createElement('div');
+        container.style.position = 'fixed';
+        container.style.left = '-9999px';
+        container.style.top = '0';
+        container.style.zIndex = '-1';
+
+        const styleTag = document.createElement('style');
+        styleTag.textContent = cssText;
+        container.appendChild(styleTag);
+        container.appendChild(onePagerContent);
+
+        document.body.appendChild(container);
+
+        // Wait for fonts and images to load
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Configure html2pdf options for high-quality letter-size output
+        const opt = {
+          margin: 0,
+          filename: 'QIS_Consultores_OnePager.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            width: 816,
+            height: 1056,
+            logging: false,
+          },
+          jsPDF: {
+            unit: 'in',
+            format: 'letter',
+            orientation: 'portrait',
+          }
+        };
+
+        // Generate PDF
+        await html2pdf().set(opt).from(onePagerContent).save();
+
+        // Success feedback
+        downloadBtn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+          Downloaded!
+        `;
+        downloadBtn.style.background = 'var(--green-500)';
+
+        // Clean up
+        container.remove();
+
+        // Reset after 3 seconds
+        setTimeout(() => {
+          downloadBtn.innerHTML = originalHTML;
+          downloadBtn.style.background = '';
+          downloadBtn.disabled = false;
+        }, 3000);
+
+      } catch (err) {
+        console.error('PDF generation error:', err);
+        downloadBtn.innerHTML = originalHTML;
+        downloadBtn.disabled = false;
+        alert('PDF generation failed. Please try again.');
+      }
+    });
+  }
 
   // ---- Parallax Effect on Hero ----
   const heroBg = document.querySelector('.hero__bg img');
