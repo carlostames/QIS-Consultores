@@ -1334,6 +1334,21 @@ button {
   opacity: 0.5;
 }
 
+.marquee__logo-img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.6;
+  filter: grayscale(100%);
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+}
+
+.marquee:hover .marquee__logo-img {
+  opacity: 0.9;
+  filter: grayscale(0%);
+}
+
 /* ============================================
    CONTACT SECTION
    ============================================ */
