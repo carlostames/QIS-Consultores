@@ -1374,13 +1374,14 @@ button {
 }
 
 .marquee__logo-img {
-  height: 32px;
+  height: 40px;
   width: auto;
   object-fit: contain;
   opacity: 0.6;
   filter: grayscale(100%);
   transition: all var(--transition-base);
   flex-shrink: 0;
+  border-radius: 6px;
 }
 
 .marquee:hover .marquee__logo-img {
