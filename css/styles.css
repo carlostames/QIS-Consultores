@@ -881,6 +881,22 @@ button {
   transform: scale(1.05);
 }
 
+.service-card__catalog-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--blue-500);
+  margin-bottom: var(--space-6);
+  transition: color var(--transition-fast), gap var(--transition-fast);
+}
+
+.service-card__catalog-link:hover {
+  color: var(--navy-800);
+  gap: var(--space-3);
+}
+
 /* ============================================
    METHODOLOGY SECTION
    ============================================ */
@@ -1138,7 +1154,7 @@ button {
 
 .team__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: var(--space-6);
   margin-bottom: var(--space-12);
 }
@@ -1225,6 +1241,43 @@ button {
   font-size: 0.7rem;
   color: var(--gray-600);
   font-weight: 500;
+}
+
+.team-card__processes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--gray-100);
+}
+
+.team-card__process-label {
+  font-size: 0.65rem;
+  color: var(--gray-400);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.team-card__process {
+  padding: 2px var(--space-2);
+  background: rgba(37, 99, 235, 0.08);
+  border-radius: var(--radius-sm);
+  font-size: 0.65rem;
+  color: var(--blue-500);
+  font-weight: 500;
+}
+
+.team-card__initials {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
 }
 
 /* ============================================
