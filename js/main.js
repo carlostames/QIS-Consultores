@@ -162,6 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const downloadBtn = document.getElementById('download-submit');
 
   if (downloadForm && downloadBtn) {
+    // Detect mobile/tablet
+    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+      || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
+
     downloadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -175,13 +179,54 @@ document.addEventListener('DOMContentLoaded', () => {
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="animation: spin 1s linear infinite;">
           <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
         </svg>
-        Generating PDF...
+        ${isMobile ? 'Opening One-Pager...' : 'Generating PDF...'}
       `;
       downloadBtn.disabled = true;
 
       // Log lead data (replace with actual CRM/webhook integration)
       console.log('Download lead captured:', data);
 
+      if (isMobile) {
+        // ===== MOBILE: Open print-ready one-pager in new tab =====
+        // On iOS/Android, window.print() triggers the native Share Sheet
+        // where users can "Save as PDF" or "Print"
+        try {
+          const printWindow = window.open('one-pager.html', '_blank');
+          
+          if (printWindow) {
+            // Wait for the page to load, then trigger print
+            printWindow.addEventListener('load', () => {
+              setTimeout(() => {
+                printWindow.print();
+              }, 1500);
+            });
+            
+            // Success feedback
+            downloadBtn.innerHTML = `
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+              Opened! Use Share → Save as PDF
+            `;
+            downloadBtn.style.background = 'var(--green-500)';
+          } else {
+            // Popup blocked — open directly
+            window.location.href = 'one-pager.html';
+          }
+        } catch (err) {
+          console.error('Mobile PDF error:', err);
+          window.open('one-pager.html', '_blank');
+        }
+
+        setTimeout(() => {
+          downloadBtn.innerHTML = originalHTML;
+          downloadBtn.style.background = '';
+          downloadBtn.disabled = false;
+        }, 4000);
+        return;
+      }
+
+      // ===== DESKTOP: Use html2pdf.js for direct PDF download =====
       try {
         // Fetch the one-pager HTML
         const response = await fetch('one-pager.html');
@@ -271,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const leftover = document.querySelector('[style*="-9999px"]');
         if (leftover) leftover.remove();
 
-        // Fallback: open the one-pager page in a new tab
+        // Fallback: open the one-pager page in a new tab with print dialog
         downloadBtn.innerHTML = `
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -281,8 +326,13 @@ document.addEventListener('DOMContentLoaded', () => {
           Opening One-Pager...
         `;
         
-        // Open one-pager in new tab as fallback
-        window.open('one-pager.html', '_blank');
+        // Open one-pager and trigger print
+        const fallbackWin = window.open('one-pager.html', '_blank');
+        if (fallbackWin) {
+          fallbackWin.addEventListener('load', () => {
+            setTimeout(() => fallbackWin.print(), 1500);
+          });
+        }
 
         setTimeout(() => {
           downloadBtn.innerHTML = originalHTML;
