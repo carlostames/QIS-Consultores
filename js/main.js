@@ -237,8 +237,13 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         };
 
-        // Generate PDF
-        await html2pdf().set(opt).from(onePagerContent).save();
+        // Generate PDF with timeout safety net
+        const pdfPromise = html2pdf().set(opt).from(onePagerContent).save();
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('PDF generation timed out')), 15000)
+        );
+
+        await Promise.race([pdfPromise, timeoutPromise]);
 
         // Success feedback
         downloadBtn.innerHTML = `
@@ -261,9 +266,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
       } catch (err) {
         console.error('PDF generation error:', err);
-        downloadBtn.innerHTML = originalHTML;
-        downloadBtn.disabled = false;
-        alert('PDF generation failed. Please try again.');
+
+        // Clean up any leftover container
+        const leftover = document.querySelector('[style*="-9999px"]');
+        if (leftover) leftover.remove();
+
+        // Fallback: open the one-pager page in a new tab
+        downloadBtn.innerHTML = `
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Opening One-Pager...
+        `;
+        
+        // Open one-pager in new tab as fallback
+        window.open('one-pager.html', '_blank');
+
+        setTimeout(() => {
+          downloadBtn.innerHTML = originalHTML;
+          downloadBtn.style.background = '';
+          downloadBtn.disabled = false;
+        }, 3000);
       }
     });
   }
