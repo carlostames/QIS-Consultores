@@ -164,8 +164,8 @@ img {
 .op-hero {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 20px 12px;
+  gap: 20px;
+  padding: 40px 28px 30px;
   background: linear-gradient(135deg, var(--op-navy-900) 0%, var(--op-navy-700) 100%);
   position: relative;
 }
@@ -186,11 +186,11 @@ img {
 
 .op-hero__title {
   font-family: var(--op-font-display);
-  font-size: 15pt;
+  font-size: 19pt;
   font-weight: 700;
   line-height: 1.15;
   color: var(--op-white);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .op-hero__title em {
@@ -199,10 +199,10 @@ img {
 }
 
 .op-hero__subtitle {
-  font-size: 7pt;
-  color: rgba(255, 255, 255, 0.65);
-  line-height: 1.4;
-  max-width: 380px;
+  font-size: 8pt;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  max-width: 420px;
 }
 
 .op-hero__visual {
@@ -214,31 +214,31 @@ img {
 .op-hero__stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5px;
+  gap: 8px;
 }
 
 .op-mini-stat {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
-  padding: 6px 8px;
+  padding: 10px 12px;
   text-align: center;
 }
 
 .op-mini-stat__number {
   display: block;
   font-family: var(--op-font-display);
-  font-size: 13pt;
+  font-size: 16pt;
   font-weight: 700;
   color: var(--op-blue-300);
   line-height: 1;
-  margin-bottom: 1px;
+  margin-bottom: 3px;
 }
 
 .op-mini-stat__label {
   display: block;
-  font-size: 6pt;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 6.5pt;
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 500;
@@ -249,12 +249,12 @@ img {
    ============================================ */
 .op-section-label {
   font-family: var(--op-font-body);
-  font-size: 5.5pt;
+  font-size: 7pt;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--op-blue-500);
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 /* ============================================
@@ -354,7 +354,7 @@ img {
    CLIENT LOGOS
    ============================================ */
 .op-clients {
-  padding: 6px 20px;
+  padding: 8px 24px;
   background: var(--op-navy-900);
 }
 
@@ -362,37 +362,37 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: nowrap;
 }
 
 .op-client-text {
   font-family: var(--op-font-body);
-  font-size: 7pt;
+  font-size: 8pt;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.1em;
   white-space: nowrap;
 }
 
 .op-client-text--sm {
-  font-size: 6pt;
+  font-size: 7pt;
   font-style: italic;
   font-weight: 400;
 }
 
 .op-client-sep {
   color: var(--op-blue-400);
-  opacity: 0.3;
-  font-size: 5pt;
+  opacity: 0.4;
+  font-size: 6pt;
 }
 
 .op-client-logo {
-  height: 22px;
+  height: 28px;
   width: auto;
   object-fit: contain;
   filter: grayscale(100%) brightness(2);
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /* ============================================
@@ -401,24 +401,25 @@ img {
 .op-main-content {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
-  gap: 16px;
-  padding: 10px 20px 4px;
+  gap: 24px;
+  padding: 16px 28px 12px;
+  flex: 1; /* Pushes footer down */
 }
 
 .op-col-left, .op-col-right {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 /* ============================================
    WHO WE ARE
    ============================================ */
 .op-summary-text {
-  font-size: 6.5pt;
-  line-height: 1.5;
+  font-size: 8pt;
+  line-height: 1.6;
   color: var(--op-gray-700);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .op-summary-text strong {
@@ -427,7 +428,7 @@ img {
 
 .op-more-link {
   display: inline-block;
-  font-size: 5.5pt;
+  font-size: 7pt;
   font-weight: 600;
   color: var(--op-blue-500);
   text-decoration: none;
@@ -439,33 +440,33 @@ img {
 .op-methodology--vertical .op-methodology__steps {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 6px;
 }
 
 .op-methodology--vertical .op-step__arrow {
-  margin: -1px 0 -1px 12px;
-  font-size: 6pt;
+  margin: -3px 0 -3px 18px;
+  font-size: 8pt;
   line-height: 1;
   color: var(--op-blue-400);
 }
 
 .op-step {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   background: var(--op-gray-50);
   border: 1px solid var(--op-gray-200);
-  border-radius: 5px;
-  padding: 4px 8px;
+  border-radius: 6px;
+  padding: 8px 12px;
 }
 
 .op-step__num {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   background: var(--op-navy-700);
   color: var(--op-white);
   font-family: var(--op-font-display);
-  font-size: 7.5pt;
+  font-size: 11pt;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -476,16 +477,16 @@ img {
 }
 
 .op-step__info h4 {
-  font-size: 6.5pt;
+  font-size: 8.5pt;
   font-weight: 700;
   color: var(--op-navy-700);
-  margin-bottom: 1px;
+  margin-bottom: 3px;
 }
 
 .op-step__info p {
-  font-size: 5pt;
+  font-size: 6.5pt;
   color: var(--op-gray-500);
-  line-height: 1.25;
+  line-height: 1.35;
 }
 
 /* ============================================
@@ -494,31 +495,111 @@ img {
 .op-services--vertical .op-services__grid {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 12px;
+}
+
+.op-service {
+  background: var(--op-gray-50);
+  border: 1px solid var(--op-gray-200);
+  border-radius: 8px;
+  padding: 12px 14px;
+  position: relative;
+}
+
+.op-service::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--op-blue-500), var(--op-ice));
+  border-radius: 8px 8px 0 0;
+}
+
+.op-service__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.op-service__icon {
+  width: 32px;
+  height: 32px;
+  background: var(--op-ice-light);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.op-service__icon svg {
+  width: 16px;
+  height: 16px;
+  color: var(--op-navy-700);
+}
+
+.op-service__type {
+  font-size: 7.5pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--op-blue-500);
+}
+
+.op-service__title {
+  font-family: var(--op-font-body);
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--op-navy-700);
+  line-height: 1.2;
+}
+
+.op-service__list {
+  list-style: none;
+  padding: 0;
+}
+
+.op-service__list li {
+  position: relative;
+  padding-left: 10px;
+  font-size: 7.5pt;
+  color: var(--op-gray-600);
+  line-height: 1.6;
+}
+
+.op-service__list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--op-blue-400);
+  font-size: 8pt;
 }
 
 /* ============================================
    STANDARDS (FULL WIDTH)
    ============================================ */
 .op-standards-full {
-  padding: 6px 20px 8px;
+  padding: 8px 28px 10px;
 }
 
 .op-standards__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 3px;
+  gap: 6px;
 }
 
 .op-std {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 2px 6px;
+  gap: 4px;
+  padding: 4px 10px;
   background: var(--op-white);
   border: 1px solid var(--op-gray-200);
   border-radius: 100px;
-  font-size: 5.5pt;
+  font-size: 7pt;
   font-weight: 600;
   color: var(--op-navy-700);
 }
@@ -530,8 +611,8 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
-  padding: 7px 20px;
+  gap: 24px;
+  padding: 12px 28px;
   background: var(--op-navy-700);
   margin-top: auto;
 }
@@ -539,9 +620,9 @@ img {
 .op-footer__item {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 6pt;
-  color: rgba(255, 255, 255, 0.65);
+  gap: 8px;
+  font-size: 7.5pt;
+  color: rgba(255, 255, 255, 0.8);
   white-space: nowrap;
 }
 
@@ -567,50 +648,10 @@ img {
     min-height: 11in;
     max-height: 11in;
     overflow: hidden;
-    transform: scale(0.97);
-    transform-origin: top center;
   }
 
   @page {
     size: letter portrait;
     margin: 0;
   }
-
-  /* Additional print compression to guarantee 1-page fit */
-  .op-header { padding: 6px 16px; }
-  .op-logo { height: 24px; }
-  .op-header__name { font-size: 10pt; }
-  .op-hero { padding: 10px 16px 8px; gap: 12px; }
-  .op-hero__title { font-size: 14pt; margin-bottom: 3px; }
-  .op-hero__subtitle { font-size: 6.5pt; line-height: 1.3; }
-  .op-mini-stat { padding: 4px 6px; border-radius: 5px; }
-  .op-mini-stat__number { font-size: 11pt; }
-  .op-mini-stat__label { font-size: 5pt; }
-  .op-hero__stat-grid { gap: 3px; }
-  .op-main-content { padding: 4px 16px 0px; gap: 12px; }
-  .op-col-left, .op-col-right { gap: 6px; }
-  .op-summary-text { font-size: 5.5pt; line-height: 1.4; margin-bottom: 4px; }
-  .op-more-link { font-size: 4.5pt; }
-  .op-methodology--vertical .op-methodology__steps { gap: 2px; }
-  .op-step { padding: 3px 5px; gap: 6px; }
-  .op-step__num { width: 14px; height: 14px; font-size: 6.5pt; }
-  .op-step__info h4 { font-size: 6pt; margin-bottom: 0px; }
-  .op-step__info p { font-size: 4.5pt; line-height: 1.2; }
-  .op-methodology--vertical .op-step__arrow { font-size: 5pt; margin: -1px 0 -1px 12px; }
-  .op-services--vertical .op-services__grid { gap: 4px; }
-  .op-service { padding: 4px 6px; border-radius: 5px; }
-  .op-service__header { margin-bottom: 2px; gap: 5px; }
-  .op-service__icon { width: 16px; height: 16px; }
-  .op-service__icon svg { width: 9px; height: 9px; }
-  .op-service__type { font-size: 4.5pt; }
-  .op-service__title { font-size: 7pt; }
-  .op-service__list li { font-size: 5pt; line-height: 1.3; padding-left: 6px; }
-  .op-clients { padding: 3px 16px; }
-  .op-client-logo { height: 14px; }
-  .op-client-text { font-size: 5pt; }
-  .op-standards-full { padding: 4px 16px 4px; }
-  .op-standards__list { gap: 2px; }
-  .op-std { padding: 1px 5px; font-size: 5pt; }
-  .op-footer { padding: 5px 16px; gap: 14px; }
-  .op-footer__item { font-size: 5.5pt; }
 }
