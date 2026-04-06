@@ -259,8 +259,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.appendChild(container);
 
-        // Wait for fonts and images to load
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Wait for ALL images to actually load before capturing
+        const allImages = container.querySelectorAll('img');
+        await Promise.all(
+          Array.from(allImages).map(img => {
+            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+            return new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve; // Don't block on broken images
+              // Safety timeout per image
+              setTimeout(resolve, 4000);
+            });
+          })
+        );
+        // Extra buffer for fonts & rendering
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Configure html2pdf options for high-quality letter-size output
         const opt = {
