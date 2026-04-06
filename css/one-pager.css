@@ -396,36 +396,76 @@ img {
 }
 
 /* ============================================
-   METHODOLOGY
+   MAIN CONTENT (2 COLUMNS)
    ============================================ */
-.op-methodology {
-  padding: 8px 20px 6px;
+.op-main-content {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 16px;
+  padding: 10px 20px 4px;
 }
 
-.op-methodology__steps {
+.op-col-left, .op-col-right {
   display: flex;
-  align-items: stretch;
-  gap: 4px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ============================================
+   WHO WE ARE
+   ============================================ */
+.op-summary-text {
+  font-size: 6.5pt;
+  line-height: 1.5;
+  color: var(--op-gray-700);
+  margin-bottom: 6px;
+}
+
+.op-summary-text strong {
+  color: var(--op-navy-700);
+}
+
+.op-more-link {
+  display: inline-block;
+  font-size: 5.5pt;
+  font-weight: 600;
+  color: var(--op-blue-500);
+  text-decoration: none;
+}
+
+/* ============================================
+   METHODOLOGY (VERTICAL)
+   ============================================ */
+.op-methodology--vertical .op-methodology__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.op-methodology--vertical .op-step__arrow {
+  margin: -1px 0 -1px 12px;
+  font-size: 6pt;
+  line-height: 1;
+  color: var(--op-blue-400);
 }
 
 .op-step {
-  flex: 1;
   display: flex;
-  gap: 4px;
-  align-items: flex-start;
+  gap: 8px;
+  align-items: center;
   background: var(--op-gray-50);
   border: 1px solid var(--op-gray-200);
   border-radius: 5px;
-  padding: 5px 6px;
+  padding: 4px 8px;
 }
 
 .op-step__num {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background: var(--op-navy-700);
   color: var(--op-white);
   font-family: var(--op-font-display);
-  font-size: 8pt;
+  font-size: 7.5pt;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -439,7 +479,7 @@ img {
   font-size: 6.5pt;
   font-weight: 700;
   color: var(--op-navy-700);
-  margin-bottom: 0;
+  margin-bottom: 1px;
 }
 
 .op-step__info p {
@@ -448,144 +488,20 @@ img {
   line-height: 1.25;
 }
 
-.op-step__arrow {
-  display: flex;
-  align-items: center;
-  color: var(--op-blue-400);
-  font-size: 8pt;
-  font-weight: 300;
-  flex-shrink: 0;
-}
-
 /* ============================================
-   RESULTS TABLE
+   SERVICES (VERTICAL)
    ============================================ */
-.op-results {
-  padding: 14px 28px;
-}
-
-.op-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 6.5pt;
-}
-
-.op-table thead {
-  background: var(--op-navy-700);
-}
-
-.op-table th {
-  padding: 5px 8px;
-  text-align: left;
-  font-weight: 600;
-  color: var(--op-white);
-  font-size: 6pt;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.op-table th:first-child {
-  border-radius: 4px 0 0 4px;
-}
-
-.op-table th:last-child {
-  border-radius: 0 4px 4px 0;
-}
-
-.op-table td {
-  padding: 4px 8px;
-  border-bottom: 1px solid var(--op-gray-100);
-  color: var(--op-gray-700);
-}
-
-.op-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.op-badge {
-  display: inline-block;
-  padding: 1px 6px;
-  border-radius: 100px;
-  font-size: 5.5pt;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.op-badge--danger {
-  background: #FEE2E2;
-  color: #DC2626;
-}
-
-.op-badge--success {
-  background: #DCFCE7;
-  color: #16A34A;
-}
-
-.op-badge--warning {
-  background: #FEF3C7;
-  color: #D97706;
-}
-
-/* ============================================
-   BOTTOM SECTION (TEAM + STANDARDS)
-   ============================================ */
-.op-bottom {
-  display: flex;
-  gap: 14px;
-  padding: 8px 20px 6px;
-  flex: 1;
-}
-
-.op-team {
-  flex: 1.4;
-}
-
-.op-team__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-}
-
-.op-member {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 5px;
-  background: var(--op-gray-50);
-  border-radius: 5px;
-  border: 1px solid var(--op-gray-100);
-}
-
-.op-member__photo {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: top center;
-  border: 2px solid var(--op-ice);
-  flex-shrink: 0;
-}
-
-.op-member__info {
+.op-services--vertical .op-services__grid {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.op-member__info strong {
-  font-size: 6.5pt;
-  color: var(--op-navy-700);
-  line-height: 1.1;
-}
-
-.op-member__info span {
-  font-size: 5pt;
-  color: var(--op-gray-500);
-  line-height: 1.2;
-}
-
-/* Standards */
-.op-standards {
-  flex: 0.6;
+/* ============================================
+   STANDARDS (FULL WIDTH)
+   ============================================ */
+.op-standards-full {
+  padding: 6px 20px 8px;
 }
 
 .op-standards__list {
@@ -671,30 +587,28 @@ img {
   .op-mini-stat__number { font-size: 11pt; }
   .op-mini-stat__label { font-size: 5pt; }
   .op-hero__stat-grid { gap: 3px; }
-  .op-services { padding: 6px 16px 5px; }
-  .op-services__grid { gap: 6px; }
-  .op-service { padding: 6px; border-radius: 5px; }
-  .op-service__header { margin-bottom: 3px; gap: 5px; }
-  .op-service__icon { width: 18px; height: 18px; }
-  .op-service__icon svg { width: 10px; height: 10px; }
-  .op-service__type { font-size: 5pt; }
-  .op-service__title { font-size: 7.5pt; }
-  .op-service__list li { font-size: 5.5pt; line-height: 1.35; padding-left: 7px; }
-  .op-clients { padding: 5px 16px; }
-  .op-client-logo { height: 16px; }
-  .op-client-text { font-size: 6pt; }
-  .op-methodology { padding: 5px 16px 4px; }
-  .op-step { padding: 4px 5px; }
-  .op-step__num { width: 16px; height: 16px; font-size: 7pt; }
-  .op-step__info h4 { font-size: 6pt; }
+  .op-main-content { padding: 4px 16px 0px; gap: 12px; }
+  .op-col-left, .op-col-right { gap: 6px; }
+  .op-summary-text { font-size: 5.5pt; line-height: 1.4; margin-bottom: 4px; }
+  .op-more-link { font-size: 4.5pt; }
+  .op-methodology--vertical .op-methodology__steps { gap: 2px; }
+  .op-step { padding: 3px 5px; gap: 6px; }
+  .op-step__num { width: 14px; height: 14px; font-size: 6.5pt; }
+  .op-step__info h4 { font-size: 6pt; margin-bottom: 0px; }
   .op-step__info p { font-size: 4.5pt; line-height: 1.2; }
-  .op-step__arrow { font-size: 7pt; }
-  .op-section-label { font-size: 5pt; margin-bottom: 4px; }
-  .op-bottom { padding: 5px 16px 4px; gap: 10px; }
-  .op-team__grid { gap: 3px; }
-  .op-member { padding: 3px 4px; }
-  .op-member__info strong { font-size: 6pt; }
-  .op-member__info span { font-size: 4.5pt; line-height: 1.15; }
+  .op-methodology--vertical .op-step__arrow { font-size: 5pt; margin: -1px 0 -1px 12px; }
+  .op-services--vertical .op-services__grid { gap: 4px; }
+  .op-service { padding: 4px 6px; border-radius: 5px; }
+  .op-service__header { margin-bottom: 2px; gap: 5px; }
+  .op-service__icon { width: 16px; height: 16px; }
+  .op-service__icon svg { width: 9px; height: 9px; }
+  .op-service__type { font-size: 4.5pt; }
+  .op-service__title { font-size: 7pt; }
+  .op-service__list li { font-size: 5pt; line-height: 1.3; padding-left: 6px; }
+  .op-clients { padding: 3px 16px; }
+  .op-client-logo { height: 14px; }
+  .op-client-text { font-size: 5pt; }
+  .op-standards-full { padding: 4px 16px 4px; }
   .op-standards__list { gap: 2px; }
   .op-std { padding: 1px 5px; font-size: 5pt; }
   .op-footer { padding: 5px 16px; gap: 14px; }
