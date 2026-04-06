@@ -157,15 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', highlightNav, { passive: true });
 
-  // ---- Download Form → PDF Generation ----
+  // ---- Download Form → Direct PDF Download ----
   const downloadForm = document.getElementById('download-form');
   const downloadBtn = document.getElementById('download-submit');
 
   if (downloadForm && downloadBtn) {
-    // Detect mobile/tablet
-    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-      || (navigator.maxTouchPoints > 1 && window.innerWidth < 1024);
-
     downloadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -173,135 +169,40 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData(downloadForm);
       const data = Object.fromEntries(formData);
 
-      // Visual feedback — show generating state
+      // Visual feedback — show downloading state
       const originalHTML = downloadBtn.innerHTML;
       downloadBtn.innerHTML = `
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="animation: spin 1s linear infinite;">
           <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
         </svg>
-        ${isMobile ? 'Opening One-Pager...' : 'Generating PDF...'}
+        Downloading...
       `;
       downloadBtn.disabled = true;
 
-      // Log lead data (replace with actual CRM/webhook integration)
-      console.log('Download lead captured:', data);
-
-      if (isMobile) {
-        // ===== MOBILE: Open print-ready one-pager in new tab =====
-        // On iOS/Android, window.print() triggers the native Share Sheet
-        // where users can "Save as PDF" or "Print"
-        try {
-          const printWindow = window.open('one-pager.html', '_blank');
-          
-          if (printWindow) {
-            // Wait for the page to load, then trigger print
-            printWindow.addEventListener('load', () => {
-              setTimeout(() => {
-                printWindow.print();
-              }, 1500);
-            });
-            
-            // Success feedback
-            downloadBtn.innerHTML = `
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M20 6L9 17l-5-5"/>
-              </svg>
-              Opened! Use Share → Save as PDF
-            `;
-            downloadBtn.style.background = 'var(--green-500)';
+      // Send lead data to CRM (fire-and-forget — don't block the download)
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then(res => res.json())
+        .then(result => {
+          if (result.success) {
+            console.log('Lead captured in CRM:', result.contactId);
           } else {
-            // Popup blocked — open directly
-            window.location.href = 'one-pager.html';
+            console.warn('CRM capture warning:', result.error);
           }
-        } catch (err) {
-          console.error('Mobile PDF error:', err);
-          window.open('one-pager.html', '_blank');
-        }
+        })
+        .catch(err => console.error('CRM capture error:', err));
 
-        setTimeout(() => {
-          downloadBtn.innerHTML = originalHTML;
-          downloadBtn.style.background = '';
-          downloadBtn.disabled = false;
-        }, 4000);
-        return;
-      }
-
-      // ===== DESKTOP: Use html2pdf.js for direct PDF download =====
       try {
-        // Fetch the one-pager HTML
-        const response = await fetch('one-pager.html');
-        const htmlText = await response.text();
-
-        // Parse the HTML to extract the content
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, 'text/html');
-        const onePagerContent = doc.getElementById('one-pager-content');
-
-        if (!onePagerContent) {
-          throw new Error('One-pager content not found');
-        }
-
-        // Also fetch the CSS
-        const cssResponse = await fetch('css/one-pager.css');
-        const cssText = await cssResponse.text();
-
-        // Create a hidden container with the one-pager content and its styles
-        const container = document.createElement('div');
-        container.style.position = 'fixed';
-        container.style.left = '-9999px';
-        container.style.top = '0';
-        container.style.zIndex = '-1';
-
-        const styleTag = document.createElement('style');
-        styleTag.textContent = cssText;
-        container.appendChild(styleTag);
-        container.appendChild(onePagerContent);
-
-        document.body.appendChild(container);
-
-        // Wait for ALL images to actually load before capturing
-        const allImages = container.querySelectorAll('img');
-        await Promise.all(
-          Array.from(allImages).map(img => {
-            if (img.complete && img.naturalWidth > 0) return Promise.resolve();
-            return new Promise((resolve) => {
-              img.onload = resolve;
-              img.onerror = resolve; // Don't block on broken images
-              // Safety timeout per image
-              setTimeout(resolve, 4000);
-            });
-          })
-        );
-        // Extra buffer for fonts & rendering
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Configure html2pdf options for high-quality letter-size output
-        const opt = {
-          margin: 0,
-          filename: 'QIS_Consultores_OnePager.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            allowTaint: true,
-            width: 816,
-            height: 1056,
-            logging: false,
-          },
-          jsPDF: {
-            unit: 'in',
-            format: 'letter',
-            orientation: 'portrait',
-          }
-        };
-
-        // Generate PDF with timeout safety net
-        const pdfPromise = html2pdf().set(opt).from(onePagerContent).save();
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('PDF generation timed out')), 15000)
-        );
-
-        await Promise.race([pdfPromise, timeoutPromise]);
+        // Direct download of the client-designed PDF
+        const link = document.createElement('a');
+        link.href = 'assets/PDF/QIS_One-Pager.pdf';
+        link.download = 'QIS_Consultores_OnePager.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
         // Success feedback
         downloadBtn.innerHTML = `
@@ -311,48 +212,26 @@ document.addEventListener('DOMContentLoaded', () => {
           Downloaded!
         `;
         downloadBtn.style.background = 'var(--green-500)';
-
-        // Clean up
-        container.remove();
-
-        // Reset after 3 seconds
-        setTimeout(() => {
-          downloadBtn.innerHTML = originalHTML;
-          downloadBtn.style.background = '';
-          downloadBtn.disabled = false;
-        }, 3000);
-
       } catch (err) {
-        console.error('PDF generation error:', err);
+        console.error('PDF download error:', err);
+        // Fallback: open PDF in new tab
+        window.open('assets/PDF/QIS_One-Pager.pdf', '_blank');
 
-        // Clean up any leftover container
-        const leftover = document.querySelector('[style*="-9999px"]');
-        if (leftover) leftover.remove();
-
-        // Fallback: open the one-pager page in a new tab with print dialog
         downloadBtn.innerHTML = `
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
+            <path d="M20 6L9 17l-5-5"/>
           </svg>
-          Opening One-Pager...
+          Opened in New Tab
         `;
-        
-        // Open one-pager and trigger print
-        const fallbackWin = window.open('one-pager.html', '_blank');
-        if (fallbackWin) {
-          fallbackWin.addEventListener('load', () => {
-            setTimeout(() => fallbackWin.print(), 1500);
-          });
-        }
-
-        setTimeout(() => {
-          downloadBtn.innerHTML = originalHTML;
-          downloadBtn.style.background = '';
-          downloadBtn.disabled = false;
-        }, 3000);
+        downloadBtn.style.background = 'var(--green-500)';
       }
+
+      // Reset after 3 seconds
+      setTimeout(() => {
+        downloadBtn.innerHTML = originalHTML;
+        downloadBtn.style.background = '';
+        downloadBtn.disabled = false;
+      }, 3000);
     });
   }
 
