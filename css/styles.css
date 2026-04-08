@@ -1330,13 +1330,14 @@ button {
 }
 
 .logo-ribbon .marquee__logo-img {
-  filter: grayscale(100%) brightness(2);
-  opacity: 0.5;
+  filter: brightness(0) invert(1);
+  opacity: 0.65;
+  height: 36px;
 }
 
 .logo-ribbon .marquee:hover .marquee__logo-img {
-  filter: grayscale(0%) brightness(1.2);
-  opacity: 0.9;
+  filter: brightness(0) invert(1);
+  opacity: 1;
 }
 
 /* --- Marquee (Infinite Scroll Logo Ribbon) --- */
